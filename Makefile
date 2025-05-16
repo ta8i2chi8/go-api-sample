@@ -7,7 +7,7 @@ down:
 	docker compose down
 
 run:
-	go run ./cmd/main.go
+	set -a; source configs/.env; set +a; go run ./cmd/main.go
 
 test:
 	go test -race -shuffle=on ./...

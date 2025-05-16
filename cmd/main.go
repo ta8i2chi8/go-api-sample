@@ -24,15 +24,15 @@ func main() {
 }
 
 func run(ctx context.Context) error {
-	cfg, err := config.New()
+	cfg, err := config.Load(ctx)
 	if err != nil {
 		slog.Error("failed to load config", "err", err)
 		return err
 	}
 
-	l, err := net.Listen("tcp", fmt.Sprintf(":%d", cfg.Port))
+	l, err := net.Listen("tcp", fmt.Sprintf(":%s", cfg.Port))
 	if err != nil {
-		slog.Error(fmt.Sprintf("failed to listen port: %d", cfg.Port), "err", err)
+		slog.Error(fmt.Sprintf("failed to listen port: %s", cfg.Port), "err", err)
 	}
 	url := fmt.Sprintf("http://%s", l.Addr().String())
 	slog.Info(fmt.Sprintf("start with %s", url))

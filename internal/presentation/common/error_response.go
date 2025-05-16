@@ -16,5 +16,6 @@ func WriteErrorResponse(ctx context.Context, w http.ResponseWriter, code int, me
 	w.WriteHeader(code)
 	if err := json.NewEncoder(w).Encode(ErrorResponse{Message: message}); err != nil {
 		fmt.Println("Failed to write error response:", err)
+		return
 	}
 }
