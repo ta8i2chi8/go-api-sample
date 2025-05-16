@@ -1,4 +1,4 @@
-package entity
+package model
 
 type ID int64
 type UserID int64

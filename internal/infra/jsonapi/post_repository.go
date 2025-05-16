@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/ta8i2chi8/go-api-sample/internal/domain/entity"
+	"github.com/ta8i2chi8/go-api-sample/internal/domain/model"
 	"github.com/ta8i2chi8/go-api-sample/internal/domain/repository"
 )
 
@@ -16,8 +16,8 @@ func NewPostRepository(client *jsonApiClient) repository.PostRepository {
 	return &PostRepository{client: client}
 }
 
-func (r *PostRepository) GetPosts(ctx context.Context) ([]entity.Post, error) {
-	var posts []entity.Post
+func (r *PostRepository) GetPosts(ctx context.Context) ([]model.Post, error) {
+	var posts []model.Post
 
 	// /postsエンドポイントにGETリクエストを送信
 	err := r.client.doRequest(ctx, http.MethodGet, "/posts", nil, &posts)
