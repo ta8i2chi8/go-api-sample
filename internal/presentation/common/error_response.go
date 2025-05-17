@@ -3,7 +3,7 @@ package common
 import (
 	"context"
 	"encoding/json"
-	"fmt"
+	"log/slog"
 	"net/http"
 )
 
@@ -15,7 +15,7 @@ func WriteErrorResponse(ctx context.Context, w http.ResponseWriter, code int, me
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 	if err := json.NewEncoder(w).Encode(ErrorResponse{Message: message}); err != nil {
-		fmt.Println("Failed to write error response:", err)
+		slog.Error("Failed to write error response", "err", err)
 		return
 	}
 }
