@@ -46,7 +46,7 @@ func (c *jsonApiClient) doRequest(ctx context.Context, method, path string, body
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
 
-	slog.Info("jsonapi: request", "method", method, "baseURL", c.BaseURL, "path", path, "body", body)
+	slog.Info("external jsonapi request", "method", method, "baseURL", c.BaseURL, "path", path, "body", body)
 
 	// リクエスト実行
 	resp, err := c.Client.Do(req)
@@ -60,7 +60,7 @@ func (c *jsonApiClient) doRequest(ctx context.Context, method, path string, body
 		return err
 	}
 
-	slog.Info("jsonapi: response", "method", method, "baseURL", c.BaseURL, "path", path, "status", resp.StatusCode)
+	slog.Info("external jsonapi response", "method", method, "baseURL", c.BaseURL, "path", path, "status", resp.StatusCode)
 
 	if resp.StatusCode >= 400 {
 		return &APIError{

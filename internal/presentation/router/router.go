@@ -9,6 +9,21 @@ import (
 	"github.com/ta8i2chi8/go-api-sample/internal/usecase"
 )
 
+func New() (http.Handler, error) {
+	mux := http.NewServeMux()
+	ch := newCustomHandler()
+	ch.use(middleware.Logger)
+
+	mux.HandleFunc("/health", handler.HealthCheckHandler)
+
+	ch.use(middleware.CheckBearerToken)
+
+	postHandler := createPostHandler()
+	mux.HandleFunc("/posts", ch.wrap(postHandler.GetPosts))
+
+	return mux, nil
+}
+
 type customHandler struct {
 	middlewares []func(http.HandlerFunc) http.HandlerFunc
 }
@@ -29,19 +44,10 @@ func (ch *customHandler) wrap(handler http.HandlerFunc) http.HandlerFunc {
 	return handler
 }
 
-func New() (http.Handler, error) {
-	mux := http.NewServeMux()
-	ch := newCustomHandler()
-
-	mux.HandleFunc("/health", handler.HealthCheckHandler)
-
-	ch.use(middleware.CheckBearerToken)
-
+func createPostHandler() *handler.PostHandler {
 	jsonApiClient := jsonapi.NewJsonApiClient("https://jsonplaceholder.typicode.com")
 	postRepository := jsonapi.NewPostRepository(jsonApiClient)
 	postUsecase := usecase.NewPostUsecase(postRepository)
 	postHandler := handler.NewPostHandler(postUsecase)
-	mux.HandleFunc("/posts", ch.wrap(postHandler.GetPosts))
-
-	return mux, nil
+	return postHandler
 }
