@@ -25,7 +25,7 @@ func Logger(next http.HandlerFunc) http.HandlerFunc {
 		durationMs := time.Since(start).Milliseconds()
 
 		// レスポンスのログを出力
-		slog.Info("Response", "method", r.Method, "path", r.URL.Path, "status_code", rec.statusCode, "duration_ms", durationMs)
+		slog.Info("api response", "method", r.Method, "path", r.URL.Path, "status_code", rec.statusCode, "duration_ms", durationMs)
 	})
 }
 
